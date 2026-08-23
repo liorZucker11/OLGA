@@ -5,7 +5,7 @@
       "media": { "type": "video", "src": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/START%20VIDEO.mp4" },
       "hotspots": [
         {
-          "id": "olga-tower",
+          "id": "olga-tower test",
           "label": "Olga Tower",
           "x": 61.7,
           "y": 60.2,
