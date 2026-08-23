@@ -142,6 +142,11 @@ class HotspotViewer {
                 <polyline points="9 6 15 12 9 18" />
               </svg>
             </button>
+            <button type="button" class="hv-gallery-filmstrip-toggle" aria-label="Hide room list">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
           </div>
         </div>
         <button type="button" class="hv-back-btn" hidden></button>
@@ -176,6 +181,8 @@ class HotspotViewer {
     this.galleryThumbsEl = this.root.querySelector(".hv-gallery-thumbs");
     this.galleryPrevBtn = this.root.querySelector(".hv-gallery-prev");
     this.galleryNextBtn = this.root.querySelector(".hv-gallery-next");
+    this.galleryFilmstripEl = this.root.querySelector(".hv-gallery-filmstrip");
+    this.galleryFilmstripToggleBtn = this.root.querySelector(".hv-gallery-filmstrip-toggle");
 
     this.transitionVideoEl.addEventListener("ended", () => this.onTransitionEnded());
     this.daynightVideoEl.addEventListener("ended", () => this.onDayNightEnded());
@@ -193,6 +200,10 @@ class HotspotViewer {
     this.galleryNoteToggleBtn.addEventListener("click", () => {
       const collapsed = this.galleryNoteEl.classList.toggle("collapsed");
       this.galleryNoteToggleBtn.setAttribute("aria-label", collapsed ? "Expand note" : "Collapse note");
+    });
+    this.galleryFilmstripToggleBtn.addEventListener("click", () => {
+      const collapsed = this.galleryFilmstripEl.classList.toggle("collapsed");
+      this.galleryFilmstripToggleBtn.setAttribute("aria-label", collapsed ? "Show room list" : "Hide room list");
     });
     this.galleryPrevBtn.addEventListener("click", () => this.selectGalleryRoom(this.galleryIndex - 1));
     this.galleryNextBtn.addEventListener("click", () => this.selectGalleryRoom(this.galleryIndex + 1));
@@ -262,10 +273,17 @@ class HotspotViewer {
     }
 
     this.isNight = false;
+    // Switching scenes should snap out of night mode instantly — the 0.5s
+    // opacity fade in CSS is only meant for the deliberate day/night toggle
+    // click, not a scene change. Without this, the previous scene's frozen
+    // night frame visibly fades out on top of the new scene's day video.
+    this.daynightVideoEl.style.transition = "none";
     this.stageEl.dataset.daynight = "";
     this.daynightVideoEl.pause();
     this.daynightVideoEl.removeAttribute("src");
     this.daynightImageEl.removeAttribute("src");
+    void this.daynightVideoEl.offsetHeight;
+    this.daynightVideoEl.style.transition = "";
     if (scene.dayNightTransition) {
       this.daynightBtn.hidden = false;
       this.updateDayNightIcon();
@@ -496,6 +514,8 @@ class HotspotViewer {
     this.closeBtn.hidden = false;
     this.galleryNoteEl.classList.remove("collapsed");
     this.galleryNoteToggleBtn.setAttribute("aria-label", "Collapse note");
+    this.galleryFilmstripEl.classList.remove("collapsed");
+    this.galleryFilmstripToggleBtn.setAttribute("aria-label", "Hide room list");
     this.galleryNoteTitleEl.textContent = gallery.title || "";
     this.galleryNoteDescEl.textContent = gallery.description || "";
 

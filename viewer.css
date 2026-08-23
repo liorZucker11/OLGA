@@ -102,12 +102,6 @@
   opacity: 1;
 }
 
-.hv-stage[data-daynight="playing"] .hv-hotspot-layer,
-.hv-stage[data-daynight="playing"] .hv-nav-layer {
-  opacity: 0;
-  pointer-events: none;
-}
-
 /* Hotspot markers */
 .hv-hotspot-layer {
   position: absolute;
@@ -584,8 +578,8 @@
   max-width: calc(100% - 40px);
   background: rgba(24, 22, 20, 0.55);
   backdrop-filter: blur(8px);
-  border-radius: 22px;
-  padding: 10px 14px;
+  border-radius: 26px;
+  padding: 36px 24px 18px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
@@ -672,4 +666,44 @@
 
 .hv-gallery-thumb.active {
   border-color: #f2b807;
+}
+
+.hv-gallery-filmstrip.collapsed {
+  padding: 8px;
+  min-width: 41px;
+  min-height: 37px;
+}
+
+.hv-gallery-filmstrip.collapsed .hv-gallery-prev,
+.hv-gallery-filmstrip.collapsed .hv-gallery-thumbs,
+.hv-gallery-filmstrip.collapsed .hv-gallery-next {
+  display: none;
+}
+
+.hv-gallery-filmstrip-toggle {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  flex-shrink: 0;
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 6px;
+  background: #17130a;
+  color: #f2b807;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.2s ease;
+}
+
+.hv-gallery-filmstrip-toggle:hover {
+  background: #2b2413;
+  color: #ffd23f;
+}
+
+.hv-gallery-filmstrip.collapsed .hv-gallery-filmstrip-toggle {
+  transform: translateX(-50%) rotate(180deg);
 }
