@@ -103,6 +103,7 @@ class HotspotViewer {
       if (w && h) this.aspectRatio = w / h;
     }
     this.render();
+    window.setTimeout(() => this.prefetchAllScenes(), 6000);
   }
 
   render() {
@@ -344,6 +345,42 @@ class HotspotViewer {
     primaryUrls.forEach((url) => this.prefetchVideo(url));
     secondaryUrls.forEach((url, i) => {
       window.setTimeout(() => this.prefetchVideo(url), 2500 + i * 900);
+    });
+  }
+
+  // Third tier, site-wide: every video clip referenced anywhere in
+  // config.json, not just ones reachable from the current scene. Runs once,
+  // well after the current scene's own prefetchReachable() tiers have had a
+  // head start, and is heavily staggered since there can be 40+ clips —
+  // dedup against this.prefetchedUrls means anything already warmed by
+  // prefetchReachable() is skipped automatically.
+  prefetchAllScenes() {
+    const urls = [];
+    Object.values(this.config.scenes).forEach((scene) => {
+      if (scene.media && scene.media.type === "video") urls.push(scene.media.src);
+      (scene.hotspots || []).forEach((h) => { if (h.transition) urls.push(h.transition); });
+      if (scene.nav) {
+        ["left", "right"].forEach((dir) => {
+          const n = scene.nav[dir];
+          if (n && n.transition) urls.push(n.transition);
+        });
+      }
+      if (scene.back && scene.back.transition) urls.push(scene.back.transition);
+      if (scene.dayNightTransition) urls.push(scene.dayNightTransition);
+      (scene.markers || []).forEach((m) => {
+        if (m.video) urls.push(m.video);
+        if (m.gallery) (m.gallery.rooms || []).forEach((r) => { if (r.video) urls.push(r.video); });
+      });
+    });
+
+    const seen = new Set();
+    const uniqueUrls = urls.filter((url) => {
+      if (seen.has(url) || this.prefetchedUrls.has(url)) return false;
+      seen.add(url);
+      return true;
+    });
+    uniqueUrls.forEach((url, i) => {
+      window.setTimeout(() => this.prefetchVideo(url), i * 700);
     });
   }
 
