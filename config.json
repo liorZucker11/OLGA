@@ -1,12 +1,12 @@
 {
-  "start": "overview",
+  "start": "tower-view",
   "scenes": {
     "overview": {
       "media": { "type": "video", "src": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/START%20VIDEO.mp4" },
       "hotspots": [
         {
-          "id": "olga-tower test",
-          "label": "Olga Tower test",
+          "id": "olga-tower",
+          "label": "Olga Tower",
           "x": 61.7,
           "y": 60.2,
           "transition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Transition_01.mp4",
@@ -49,10 +49,6 @@
       "nav": {
         "left": { "target": "tower-view-2", "transition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/4.mp4" },
         "right": { "target": "tower-view-3", "transition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/1.mp4" }
-      },
-      "back": {
-        "transition": "animation/transition_back_to_start.mp4",
-        "target": "overview"
       },
       "dayNightTransition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/day_night_01.mp4",
       "dayNightImage": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/night_1.png"
