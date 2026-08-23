@@ -1,0 +1,675 @@
+#viewer-root {
+  width: 100%;
+  height: 100%;
+}
+
+.hv-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0b0b0d;
+}
+
+/* Off-screen video elements used purely to warm the browser's cache for
+   likely-next clips; visibility:hidden (not display:none) keeps browsers
+   from throttling their loading. */
+.hv-prefetch {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Locked to the media's aspect ratio and centered in the stage (sized in
+   px by viewer.js) so hotspot percentages stay pinned to the same point on
+   the footage regardless of window size/aspect ratio. */
+.hv-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hv-bg-video,
+.hv-bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* Hide the scene's background while the gallery overlay is open — without
+   this, any momentary dip in the two gallery videos' combined opacity
+   during their cross-dissolve lets the background bleed through. */
+.hv-stage[data-mode="gallery"] .hv-bg-video,
+.hv-stage[data-mode="gallery"] .hv-bg-image {
+  opacity: 0;
+}
+
+.hv-transition-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.hv-stage[data-mode="transition"] .hv-transition-video {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Day/night toggle: plays once and freezes on its last frame ("night") */
+.hv-daynight-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.hv-stage[data-daynight="playing"] .hv-daynight-video,
+.hv-stage[data-daynight="night"] .hv-daynight-video {
+  opacity: 1;
+}
+
+/* Static night image, painted over the frozen video (DOM order) once the
+   day-to-night clip finishes, when the scene provides one */
+.hv-daynight-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hv-stage[data-daynight="night"] .hv-daynight-image {
+  opacity: 1;
+}
+
+.hv-stage[data-daynight="playing"] .hv-hotspot-layer,
+.hv-stage[data-daynight="playing"] .hv-nav-layer {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Hotspot markers */
+.hv-hotspot-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.25s ease;
+}
+
+.hv-stage[data-mode="transition"] .hv-hotspot-layer {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Left/right nav arrows, paired together near the bottom of the frame */
+.hv-nav-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 7px;
+  padding-bottom: 24px;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.hv-stage[data-mode="transition"] .hv-nav-layer {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hv-nav-btn {
+  position: relative;
+  pointer-events: auto;
+  width: 33px;
+  height: 33px;
+  border: none;
+  border-radius: 50%;
+  background: #17130a;
+  color: #f2b807;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.hv-nav-btn:hover {
+  background: #2b2413;
+  color: #ffd23f;
+  transform: scale(1.08);
+}
+
+.hv-hotspot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hv-hotspot-dot {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #17130a;
+  color: #f2b807;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.hv-hotspot:hover .hv-hotspot-dot {
+  transform: scale(1.15);
+  background: #2b2413;
+  color: #ffd23f;
+}
+
+.hv-hotspot-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
+  border-radius: 50%;
+  background: rgba(242, 184, 7, 0.55);
+  animation: hv-pulse 2.2s ease-out infinite;
+}
+
+@keyframes hv-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* Same pulsing ring as the hotspot/podium marker, reused on other icon
+   buttons — excluding the back button and the gallery/apartment-slide
+   controls (prev/next arrows, note-collapse toggle), which stay static. */
+.hv-marker-dot::before,
+.hv-nav-btn::before,
+.hv-daynight-btn::before,
+.hv-close-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(242, 184, 7, 0.55);
+  animation: hv-pulse 2.2s ease-out infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* The close button still pulses for marker preview videos, but not while
+   it's closing the apartment gallery. */
+.hv-stage[data-mode="gallery"] .hv-close-btn::before {
+  display: none;
+}
+
+.hv-hotspot-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  white-space: nowrap;
+  background: rgba(15, 15, 17, 0.92);
+  color: #f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.hv-hotspot-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: rgba(15, 15, 17, 0.92);
+}
+
+.hv-hotspot:hover .hv-hotspot-tooltip,
+.hv-hotspot:focus-visible .hv-hotspot-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Amenity markers: minimalist, static (no pulse), gold + black, label on hover */
+.hv-marker-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.hv-stage[data-mode="transition"] .hv-marker-layer {
+  opacity: 0;
+}
+
+.hv-stage[data-mode="transition"] .hv-marker {
+  pointer-events: none;
+}
+
+.hv-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: default;
+  outline: none;
+  pointer-events: auto;
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+}
+
+.hv-marker--playable {
+  cursor: pointer;
+}
+
+.hv-marker-dot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #17130a;
+  color: #f2b807;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.hv-marker:hover .hv-marker-dot,
+.hv-marker:focus-visible .hv-marker-dot {
+  transform: scale(1.12);
+  background: #2b2413;
+  color: #ffd23f;
+}
+
+.hv-marker-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  white-space: nowrap;
+  background: #17130a;
+  color: #f2b807;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 5px 10px;
+  border-radius: 5px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.hv-marker-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: #17130a;
+}
+
+.hv-marker:hover .hv-marker-tooltip,
+.hv-marker:focus-visible .hv-marker-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Back button (rendered per-scene when the scene defines a "back" target) */
+.hv-back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 2;
+  border: none;
+  border-radius: 9px;
+  padding: 12px 18px;
+  background: rgba(15, 15, 17, 0.75);
+  color: #f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.2s ease, background 0.15s ease;
+}
+
+.hv-back-btn:hover {
+  background: rgba(30, 30, 33, 0.9);
+}
+
+.hv-back-btn[hidden] {
+  display: none;
+}
+
+.hv-stage[data-mode="transition"] .hv-back-btn {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Day/night toggle button (top-right corner) */
+.hv-daynight-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: #17130a;
+  color: #f2b807;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.2s ease, background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.hv-daynight-btn:hover {
+  background: #2b2413;
+  color: #ffd23f;
+  transform: scale(1.06);
+}
+
+.hv-daynight-btn[hidden] {
+  display: none;
+}
+
+/* Close button, shared by marker preview videos and the gallery overlay (top-right corner) */
+.hv-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: #17130a;
+  color: #f2b807;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.hv-close-btn:hover {
+  background: #2b2413;
+  color: #ffd23f;
+  transform: scale(1.06);
+}
+
+.hv-close-btn[hidden] {
+  display: none;
+}
+
+.hv-stage[data-mode="transition"] .hv-daynight-btn,
+.hv-stage[data-mode="gallery"] .hv-daynight-btn,
+.hv-stage[data-daynight="playing"] .hv-daynight-btn {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hv-stage[data-mode="gallery"] .hv-back-btn {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hv-stage[data-mode="gallery"] .hv-hotspot-layer,
+.hv-stage[data-mode="gallery"] .hv-marker-layer,
+.hv-stage[data-mode="gallery"] .hv-nav-layer {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Gallery: two stacked video layers cross-dissolve between rooms — the
+   incoming clip fades in while the outgoing one fades out, overlapping,
+   so there's no dip to black between them. */
+.hv-gallery-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.hv-stage[data-mode="gallery"] .hv-gallery-video.hv-gallery-video--visible {
+  opacity: 1;
+}
+
+/* Gallery: collapsible title/description note card (top-left) */
+.hv-gallery-note {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  max-width: 260px;
+  background: rgba(30, 32, 36, 0.55);
+  backdrop-filter: blur(6px);
+  border-radius: 10px;
+  padding: 14px 16px;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease, padding 0.2s ease;
+}
+
+.hv-stage[data-mode="gallery"] .hv-gallery-note {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.hv-gallery-note-title {
+  color: #f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.hv-gallery-note-desc {
+  margin-top: 6px;
+  color: rgba(245, 245, 245, 0.8);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.hv-gallery-note.collapsed {
+  padding: 8px;
+  max-width: none;
+}
+
+.hv-gallery-note.collapsed .hv-gallery-note-body {
+  display: none;
+}
+
+.hv-gallery-note-toggle {
+  position: relative;
+  flex-shrink: 0;
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 6px;
+  background: #17130a;
+  color: #f2b807;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.2s ease;
+}
+
+.hv-gallery-note-toggle:hover {
+  background: #2b2413;
+  color: #ffd23f;
+}
+
+.hv-gallery-note.collapsed .hv-gallery-note-toggle {
+  transform: rotate(180deg);
+}
+
+/* Gallery: bottom filmstrip with prev/next arrows, housed in a rounded panel */
+.hv-gallery-filmstrip {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: calc(100% - 40px);
+  background: rgba(24, 22, 20, 0.55);
+  backdrop-filter: blur(8px);
+  border-radius: 22px;
+  padding: 10px 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.hv-stage[data-mode="gallery"] .hv-gallery-filmstrip {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hv-gallery-nav {
+  position: relative;
+  flex-shrink: 0;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  background: #17130a;
+  color: #f2b807;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.hv-gallery-nav:hover {
+  background: #2b2413;
+  color: #ffd23f;
+  transform: scale(1.08);
+}
+
+.hv-gallery-thumbs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 3px;
+}
+
+.hv-gallery-thumbs::-webkit-scrollbar {
+  display: none;
+}
+
+.hv-gallery-thumb {
+  position: relative;
+  flex-shrink: 0;
+  width: 86px;
+  height: 55px;
+  border-radius: 7px;
+  border: 2px solid transparent;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  background: #17130a;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.hv-gallery-thumb video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.hv-gallery-thumb-label {
+  position: absolute;
+  inset: auto 0 0 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.6;
+  padding: 7px 5px 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hv-gallery-thumb:hover {
+  transform: translateY(-1px);
+}
+
+.hv-gallery-thumb.active {
+  border-color: #f2b807;
+}

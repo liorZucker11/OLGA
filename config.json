@@ -1,0 +1,196 @@
+{
+  "start": "overview",
+  "scenes": {
+    "overview": {
+      "media": { "type": "video", "src": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/START%20VIDEO.mp4" },
+      "hotspots": [
+        {
+          "id": "olga-tower",
+          "label": "Olga Tower",
+          "x": 61.7,
+          "y": 60.2,
+          "transition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Transition_01.mp4",
+          "target": "tower-view"
+        }
+      ]
+    },
+    "tower-view": {
+      "media": { "type": "video", "src": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Drone_static_01.mp4" },
+      "hotspots": [
+        {
+          "id": "Podium",
+          "label": "Podium",
+          "x": 68.4,
+          "y": 79.6,
+          "transition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Transition_02.mp4",
+          "target": "eye-level"
+        }
+      ],
+      "markers": [
+        { "id": "apartment", "label": "City View Apartment", "icon": "apartment", "x": 61.7, "y": 61.6,
+          "gallery": {
+            "title": "City View Apartment",
+            "description": "Spacious apartment with panoramic city views.",
+            "rooms": [
+              { "id": "living-room", "label": "Living Room", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/City_View_Apartment/living_room.mp4" },
+              { "id": "parents-room", "label": "Parents Room", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/City_View_Apartment/parents_room.mp4" },
+              { "id": "kids-room", "label": "Kids Room", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/City_View_Apartment/kids_room.mp4" },
+              { "id": "bathroom", "label": "Bathroom", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/City_View_Apartment/bath_room.mp4" }
+            ]
+          }
+        },
+        { "id": "beach", "label": "Beach", "icon": "beach", "x": 23, "y": 27, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/beach.mp4" },
+        { "id": "school", "label": "School", "icon": "school", "x": 12, "y": 92, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/school.mp4" },
+        { "id": "basketball", "label": "Basketball", "icon": "basketball", "x": 38, "y": 73, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/basketball.mp4" },
+        { "id": "walking-trails", "label": "Walking Trails", "icon": "walking", "x": 44, "y": 73, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/walking_trails.mp4" },
+        { "id": "park", "label": "Park", "icon": "park", "x": 40, "y": 65, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/park.mp4" },
+        { "id": "restaurants", "label": "Restaurants", "icon": "restaurant", "x": 52, "y": 68, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/restaurants.mp4" }
+      ],
+      "nav": {
+        "left": { "target": "tower-view-2", "transition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/4.mp4" },
+        "right": { "target": "tower-view-3", "transition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/1.mp4" }
+      },
+      "back": {
+        "transition": "animation/transition_back_to_start.mp4",
+        "target": "overview"
+      },
+      "dayNightTransition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/day_night_01.mp4",
+      "dayNightImage": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/night_1.png"
+    },
+    "tower-view-2": {
+      "media": { "type": "video", "src": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Drone_static_02.mp4" },
+      "markers": [
+        { "id": "seaview-apartment", "label": "Sea View Apartment", "icon": "seaview", "x": 53.0, "y": 44.4,
+          "gallery": {
+            "title": "Sea View Apartment",
+            "description": "Spacious apartment with panoramic sea views.",
+            "rooms": [
+              { "id": "living-room", "label": "Living Room", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Sea_View_Apartment/sea_view_living.mp4" },
+              { "id": "parents-room", "label": "Parents Room", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Sea_View_Apartment/sea_view_parents.mp4" },
+              { "id": "kids-room", "label": "Kids Room", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Sea_View_Apartment/sea_view_kids.mp4" },
+              { "id": "bathroom", "label": "Bathroom", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Sea_View_Apartment/sea_view_bath.mp4" },
+              { "id": "balcony", "label": "Balcony", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Sea_View_Apartment/sea_view_balcony.mp4" }
+            ]
+          }
+        },
+        { "id": "pool", "label": "Pool", "icon": "pool", "x": 57, "y": 66, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/pool.mp4" },
+        { "id": "shopping", "label": "Shopping", "icon": "shopping", "x": 50, "y": 78, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/shopping.mp4" },
+        { "id": "restaurants", "label": "Restaurants", "icon": "restaurant", "x": 64, "y": 80, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/restaurants.mp4" },
+        { "id": "walking-trails", "label": "Walking Trails", "icon": "walking", "x": 79, "y": 86, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/walking_trails.mp4" },
+        { "id": "basketball", "label": "Basketball", "icon": "basketball", "x": 88, "y": 82, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/basketball.mp4" },
+        { "id": "park", "label": "Park", "icon": "park", "x": 56, "y": 95, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/park.mp4" }
+      ],
+      "nav": {
+        "left": { "target": "tower-view-3", "transition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/5.mp4" },
+        "right": { "target": "tower-view", "transition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/3.mp4" }
+      },
+      "back": {
+        "transition": "animation/transition_back_to_start.mp4",
+        "target": "overview"
+      },
+      "dayNightTransition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/day_night_02.mp4",
+      "dayNightImage": "animation/night_2.png"
+    },
+    "tower-view-3": {
+      "media": { "type": "video", "src": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Drone_static_03.mp4" },
+      "hotspots": [
+        {
+          "id": "Podium",
+          "label": "Podium",
+          "x": 38,
+          "y": 76,
+          "transition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Transition_02.mp4",
+          "target": "eye-level"
+        }
+      ],
+      "markers": [
+        { "id": "apartment", "label": "City View Apartment", "icon": "apartment", "x": 41.3, "y": 43.9,
+          "gallery": {
+            "title": "City View Apartment",
+            "description": "Spacious apartment with panoramic city views.",
+            "rooms": [
+              { "id": "living-room", "label": "Living Room", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/City_View_Apartment/living_room.mp4" },
+              { "id": "parents-room", "label": "Parents Room", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/City_View_Apartment/parents_room.mp4" },
+              { "id": "kids-room", "label": "Kids Room", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/City_View_Apartment/kids_room.mp4" },
+              { "id": "bathroom", "label": "Bathroom", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/City_View_Apartment/bath_room.mp4" }
+            ]
+          }
+        },
+        { "id": "school", "label": "School", "icon": "school", "x": 31, "y": 39, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/school.mp4" },
+        { "id": "pool", "label": "Pool", "icon": "pool", "x": 54, "y": 58, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/pool.mp4" },
+        { "id": "restaurants", "label": "Restaurants", "icon": "restaurant", "x": 58, "y": 51, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/restaurants.mp4" },
+        { "id": "shopping", "label": "Shopping", "icon": "shopping", "x": 54, "y": 76, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/shopping.mp4" },
+        { "id": "park", "label": "Park", "icon": "park", "x": 73, "y": 56, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/park.mp4" }
+      ],
+      "nav": {
+        "left": { "target": "tower-view", "transition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/6.mp4" },
+        "right": { "target": "tower-view-2", "transition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/2.mp4" }
+      },
+      "back": {
+        "transition": "animation/transition_back_to_start.mp4",
+        "target": "overview"
+      },
+      "dayNightTransition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/day_night_03.mp4",
+      "dayNightImage": "animation/night_3.png"
+    },
+    "eye-level": {
+      "media": { "type": "video", "src": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Video_eyeLevel_01.mp4" },
+      "markers": [
+        { "id": "apartment", "label": "City View Apartment", "icon": "apartment", "x": 39.5, "y": 11.8,
+          "gallery": {
+            "title": "City View Apartment",
+            "description": "Spacious apartment with panoramic city views.",
+            "rooms": [
+              { "id": "living-room", "label": "Living Room", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/City_View_Apartment/living_room.mp4" },
+              { "id": "parents-room", "label": "Parents Room", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/City_View_Apartment/parents_room.mp4" },
+              { "id": "kids-room", "label": "Kids Room", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/City_View_Apartment/kids_room.mp4" },
+              { "id": "bathroom", "label": "Bathroom", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/City_View_Apartment/bath_room.mp4" }
+            ]
+          }
+        },
+        { "id": "pool", "label": "Pool", "icon": "pool", "x": 40.5, "y": 46.3, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/pool.mp4" },
+        { "id": "wellness", "label": "Wellness", "icon": "wellness", "x": 35.7, "y": 52.1, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/wellness.mp4" },
+        { "id": "gym", "label": "Gym", "icon": "gym", "x": 43.1, "y": 50.0, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/gym.mp4" },
+        { "id": "spa", "label": "Spa", "icon": "spa", "x": 52.2, "y": 47.9, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/spa.mp4" },
+        { "id": "lobby", "label": "Lobby", "icon": "lobby", "x": 46.2, "y": 81.8, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/lobby.mp4" }
+      ],
+      "nav": {
+        "left": { "target": "eye-level-2", "transition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Transition_04.mp4" }
+      },
+      "back": {
+        "transition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Transition_03.mp4",
+        "target": "tower-view"
+      }
+    },
+    "eye-level-2": {
+      "media": { "type": "video", "src": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Video_eyeLevel_02.mp4" },
+      "markers": [
+        { "id": "pool", "label": "Pool", "icon": "pool", "x": 34.2, "y": 5.1, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/pool.mp4" },
+        { "id": "wellness", "label": "Wellness", "icon": "wellness", "x": 38.0, "y": 20.5, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/wellness.mp4" },
+        { "id": "gym", "label": "Gym", "icon": "gym", "x": 45.1, "y": 32.7, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/gym.mp4" },
+        { "id": "spa", "label": "Spa", "icon": "spa", "x": 50.4, "y": 42.9, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/spa.mp4" },
+        { "id": "seaview-apartment", "label": "Sea View Apartment", "icon": "seaview", "x": 61.3, "y": 12.8,
+          "gallery": {
+            "title": "Sea View Apartment",
+            "description": "Spacious apartment with panoramic sea views.",
+            "rooms": [
+              { "id": "living-room", "label": "Living Room", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Sea_View_Apartment/sea_view_living.mp4" },
+              { "id": "parents-room", "label": "Parents Room", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Sea_View_Apartment/sea_view_parents.mp4" },
+              { "id": "kids-room", "label": "Kids Room", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Sea_View_Apartment/sea_view_kids.mp4" },
+              { "id": "bathroom", "label": "Bathroom", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Sea_View_Apartment/sea_view_bath.mp4" },
+              { "id": "balcony", "label": "Balcony", "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Sea_View_Apartment/sea_view_balcony.mp4" }
+            ]
+          }
+        },
+        { "id": "lobby", "label": "Lobby", "icon": "lobby", "x": 45.6, "y": 87.7, "video": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/locations/lobby.mp4" }
+      ],
+      "nav": {
+        "right": { "target": "eye-level", "transition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Transition_05.mp4" }
+      },
+      "back": {
+        "transition": "https://pub-30a7f9aba577495c88006f731c8ec212.r2.dev/Transition_03.mp4",
+        "target": "tower-view"
+      }
+    }
+  }
+}
