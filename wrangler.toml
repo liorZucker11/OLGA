@@ -1,0 +1,9 @@
+name = "360viz"
+compatibility_date = "2026-08-23"
+
+routes = [
+  { pattern = "360viz.olga.one-viz-studio.com", custom_domain = true }
+]
+
+[assets]
+directory = "."
